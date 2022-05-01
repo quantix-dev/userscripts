@@ -32,10 +32,13 @@ module.exports = readdirSync(SOURCE, { withFileTypes: true }).filter(de => de.is
     }),
 
     userscript(
-      path.resolve(`${SOURCE}/${de.name}/index.js`),
+      path.resolve(`${SOURCE}/${de.name}/meta.js`),
       meta => meta
+        .replace('%name%', de.name)
         .replace('process.env.VERSION', pkg.version)
-        .replace('process.env.AUTHOR', pkg.author),
+        .replace('process.env.AUTHOR', pkg.author)
+        .replace('%durl%', `https://raw.githubusercontent.com/quantix-dev/userscripts/main/dist/${de.name}.user.js`)
+        .replace('%hurl%', `https://github.com/quantix-dev/userscripts/tree/main/src/${de.name}`),
     ),
   ],
 
