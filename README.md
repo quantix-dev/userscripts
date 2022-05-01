@@ -1,21 +1,19 @@
-# WebEnhanced
+## WebEnhanced
 
-This is a userscript initiated from [@violentmonkey/generator-userscript](https://github.com/violentmonkey/generator-userscript).
+This is an assortment of userscripts developed for ViolentMonkey, with untested suppot for Greasemonkey
+and other userscript managers that support modern ES 6 features.
 
-## Development
+### Building
+There should be a github action that builds the userscripts for release automatically.
+However, if you want to build it yourself this project was setup using `yarn 2`
 
-``` sh
-$ yarn dev
-```
+All you need to do is download the source files, and run `yarn build` in the directory
+it should then output all of the userscripts to a `dist` folder.
 
-## Building
+### Userscripts
+The userscript source code is located within the [src folder](src)
+inside of that folder is a [README](src/README.md) which will list
+each of the individual userscripts and their function.
 
-```sh
-$ yarn build
-```
-
-## Lint
-
-``` sh
-$ yarn lint
-```
+Within each userscript is another readme that displays it's own function
+for example, [Spectacles](src/Spectacles/README.md)

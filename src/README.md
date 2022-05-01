@@ -1,3 +1,7 @@
-# Userscripts/src
+## Current Userscripts
 
-This file contains all of the userscript source files,
+### Spectacles
+Spectacles is an enhancement for [reddit](https://reddit.com).
+It automatically removes all blur effects caused by spoilers and displays the hidden image, video or gif.
+
+*More coming soon..*
