@@ -1,15 +1,18 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "es2021": true
+  root: true,
+  extends: [
+    require.resolve('@gera2ld/plaid/eslint'),
+    'plugin:prettier/recommended',
+  ],
+  settings: {
+    'import/resolver': {
+      'babel-module': {},
     },
-    "extends": [
-        "standard"
-    ],
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "module"
+    react: {
+      pragma: 'VM',
     },
-    "rules": {
-    }
-}
+  },
+  globals: {
+    VM: true,
+  },
+};

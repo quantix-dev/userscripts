@@ -1,11 +1,46 @@
 {
   "name": "Userscripts",
+  "version": "0.0.0",
+  "description": "",
+  "author": "quantix-dev",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=12"
+  },
   "packageManager": "yarn@3.2.0",
+  "scripts": {
+    "prepare": "husky install",
+    "dev": "rollup -wc rollup.conf.js",
+    "clean": "del-cli dist",
+    "build:js": "rollup -c rollup.conf.js",
+    "prebuild": "run-s ci clean",
+    "build": "cross-env NODE_ENV=production run-s build:js",
+    "ci": "run-s lint",
+    "lint": "eslint --ext .js ."
+  },
   "dependencies": {
-    "eslint": "8.0.1",
-    "eslint-config-standard": "latest",
-    "eslint-plugin-import": "2.25.2",
-    "eslint-plugin-n": "15.0.0",
-    "eslint-plugin-promise": "6.0.0"
+    "@babel/runtime": "^7.16.3",
+    "@violentmonkey/dom": "^2.0.2",
+    "@violentmonkey/ui": "^0.7.0"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.16.0",
+    "@babel/runtime": "^7.16.3",
+    "@gera2ld/plaid": "~2.4.0",
+    "@gera2ld/plaid-rollup": "~2.4.0",
+    "@violentmonkey/dom": "^2.0.2",
+    "@violentmonkey/ui": "^0.7.0",
+    "cross-env": "^7.0.3",
+    "del-cli": "^4.0.1",
+    "eslint": "^8.14.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.4",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.4.1",
+    "resolve": "^1.22.0",
+    "rollup": "^2.71.1",
+    "rollup-plugin-userscript": "^0.1.1"
   }
 }
