@@ -1,4 +1,5 @@
 ## WebEnhanced
+[![Build](https://github.com/quantix-dev/userscripts/actions/workflows/main.yml/badge.svg)](https://github.com/quantix-dev/userscripts/actions/workflows/main.yml)
 
 This is an assortment of userscripts developed for ViolentMonkey, with untested suppot for Greasemonkey
 and other userscript managers that support modern ES 6 features.
