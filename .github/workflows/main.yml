@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      
+  # Allows it to be ran manually
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Publish Userscripts
+    runs-on: ubuntu-latest
+    
+    env:
+      YARN_ENABLE_MIRROR: 'false'
+      YARN_ENABLE_GLOBAL_CACHE: 'false'
+    
+    steps:
+      # Setup file access & Cache
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: |
+            .yarn/cache
+          key: |
+            yarn2-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            yarn2-${{ hashFiles('yarn.lock') }}
+      
+      # Building with yarn
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: install
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: build
+      
+      # Pushing to release
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*.user.js
