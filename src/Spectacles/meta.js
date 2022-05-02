@@ -5,7 +5,7 @@
 // @version     process.env.VERSION
 // @description Reddit glasses to remove blurry spoilers
 // @match       https://www.reddit.com/*
-// @run-at		document-idle
+// @grant		GM_xmlhttpRequest
 // @homepageURL %hurl%
 // @downloadURL	%durl%
 // @supportURL	https://github.com/quantix-dev/userscripts/issues

@@ -1,53 +1,47 @@
-// Globals
-let treeWalker;
-
 // Searches the external post for an unblurred match, and ensures it's the same image.
 function getUnspoileredSrc(blurredSrc, link) {
 	return new Promise((resolve, reject) => {
 		// Checking to see if the link isn't already unblurred
 		const splitURL = link.split('?')[1]
 		const urlParams = new URLSearchParams(splitURL);
-		if (link.split('/')[2] == 'preview.redd.it' && !urlParams.has('blur')) {
-			resolve(link);
+		if (link.split('/')[2] != 'reddit.com' && link.split('/')[2] != 'www.reddit.com' && !urlParams.has('blur')) {
+			return resolve(link);
 		}
 
 		// Getting source from external page
-		const request = new window.XMLHttpRequest();
-		request.open('GET', link);
-		request.responseType = 'document';
-		request.onload = () => {
-			if (request.readyState !== request.DONE && request.status !== 200) return;
+		GM_xmlhttpRequest({
+			method: 'GET',
+			url: link,
+			responseType: 'document',
+			onload: (response) => {
+				if (response.readyState !== response.DONE && response.status !== 200) return;
 
-			// Creating temporary tree walker
-			const page = request.response;
-			const pageContent = page.getElementById('AppRouter-main-content');
-			const tmpTreeWalker = page.createTreeWalker(pageContent, NodeFilter.SHOW_ELEMENT, (node) => {
-				return node.nodeName == 'A' ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
-			});
+				// Creating temporary tree walker
+				const page = response.response
+				const pageContent = page.getElementById('AppRouter-main-content');
+				const tmpTreeWalker = page.createTreeWalker(pageContent, NodeFilter.SHOW_ELEMENT, (node) => {
+					return node.nodeName == 'A' ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+				});
 
-			// Looping through to grab source
-			let curNode = tmpTreeWalker.currentNode;
-			while (curNode) {
-				curNode = tmpTreeWalker.nextNode();
+				// Looping through to grab source
+				let curNode = tmpTreeWalker.currentNode;
+				while (curNode) {
+					curNode = tmpTreeWalker.nextNode();
 
-				// Check Children
-				const children = curNode.childNodes;
-				for (let i = 0; i < children.length; i++) {
-					const child = children[i];
-					if (child.nodeName !== "IMG") continue;
-					if (child.src == blurredSrc) {
-						resolve(curNode.href);
-						return;
+					// Check Children
+					const children = curNode.childNodes;
+					for (let i = 0; i < children.length; i++) {
+						const child = children[i];
+						if (child.nodeName !== "IMG") continue;
+						if (child.src == blurredSrc)
+							return resolve(curNode.href);
 					}
 				}
+
+				// Something up
+				return reject(blurredSrc);
 			}
-
-			// Something up
-			reject(blurredSrc);
-		}
-
-		// Sending request
-		request.send();
+		});
 	});
 }
 
@@ -81,11 +75,10 @@ function removePostSpoiler(element, postLink) {
 				// Parenting
 				element.parentNode.parentNode.appendChild(video);
 				element.parentNode.remove();
-				treeWalker.currentNode = video; // Fix for treeWalker freezing on deleted div
 
 				// Fixing styling
 				video.parentNode.style = "";
-
+				element = video;
 				break;
 			}
 			default: {
@@ -94,16 +87,38 @@ function removePostSpoiler(element, postLink) {
 				break;
 			}
 		}
+
+		// Ensuring the spoiler button doesn't show up again
+		new MutationObserver((list) => list.filter(mut => mut.type === 'childList').forEach((mut) => {
+			for (let child of mut.addedNodes) {
+				if (child != element) {
+					child.remove();
+				}
+			}
+		})).observe(element.parentNode, { childList: true });
 	});
 }
 
-// Scans through all of the page's posts and attempts to unspoiler
-let cooldown = false;
-function scanContent() {
-	if (cooldown) return;
-	cooldown = true;
+// Searches through the post and finds the image to unspoiler
+function getImageFromPost(post) {
+	// Creating tree walker from post
+	const treeWalker = document.createTreeWalker(post, NodeFilter.SHOW_ELEMENT, function (node) {
+		// Validating
+		if (node.nodeName == 'IMG') {
+			// Constructing URL
+			const url = node.src;
+			const splitURL = url.split('?')[1]
+			const urlParams = new URLSearchParams(splitURL);
 
-	// Loop through the nodes
+			// Checking to see if it's a valid post
+			if (url.split('/')[2] == 'preview.redd.it' && urlParams.has('blur')) {
+				return NodeFilter.FILTER_ACCEPT;
+			}
+		}
+
+		return NodeFilter.FILTER_SKIP;
+	});
+
 	let currentNode = treeWalker.currentNode;
 	while (currentNode) {
 		// Getting next node along
@@ -122,45 +137,23 @@ function scanContent() {
 		if (par.nodeName != 'A') continue;
 		removePostSpoiler(currentNode, par.href);
 	}
-
-	setTimeout(() => cooldown = false, 500);
 }
 
+/*===============*/
 
-/* Initialises and sets up post unspoilerinator */
-
-// Getting the root node
-let rootNode;
 if (window.location.href.split('/')[5] !== 'comments') {
+	// Attempting to dynamically grab the root
 	let depth = 0;
-	rootNode = document.getElementsByClassName('scrollerItem Post')[0].parentNode.parentNode.parentNode;
+	const rootNode = document.getElementsByClassName('scrollerItem Post')[0].parentNode.parentNode.parentNode;
 	while (rootNode.childNodes.length <= 5 && depth < 10) {
 		rootNode = rootNode.parentNode;
 		depth++;
 	}
 
+	/* Detecting newly added posts, so we can unspoiler them */
+	new MutationObserver((mutationList) => mutationList.filter(mut => mut.type === 'childList').forEach((mut) => {
+		getImageFromPost(mut.addedNodes[0]);
+	})).observe(rootNode, { childList: true });	// old method: window.addEventListener('scroll', scan)
 } else {
-	rootNode = document.getElementsByClassName('Post')[0].parentNode;
+	getImageFromPost(document.getElementsByClassName('Post')[0]);
 }
-
-// Create tree walker
-treeWalker = document.createTreeWalker(rootNode, NodeFilter.SHOW_ELEMENT, function (node) {
-	// Validating
-	if (node.nodeName == 'IMG') {
-		// Constructing URL
-		const url = node.src;
-		const splitURL = url.split('?')[1]
-		const urlParams = new URLSearchParams(splitURL);
-
-		// Checking to see if it's a valid post
-		if (url.split('/')[2] == 'preview.redd.it' && urlParams.has('blur')) {
-			return NodeFilter.FILTER_ACCEPT;
-		}
-	}
-
-	return NodeFilter.FILTER_SKIP;
-});
-
-// Setup content scanner
-scanContent()
-new MutationObserver(scanContent).observe(rootNode, { childList: true });	// old method: window.addEventListener('scroll', scan)
