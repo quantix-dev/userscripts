@@ -154,6 +154,9 @@ if (window.location.href.split('/')[5] !== 'comments') {
 	new MutationObserver((mutationList) => mutationList.filter(mut => mut.type === 'childList').forEach((mut) => {
 		getImageFromPost(mut.addedNodes[0]);
 	})).observe(rootNode, { childList: true });	// old method: window.addEventListener('scroll', scan)
+
+	// Unspoiler already loaded posts
+	rootNode.childNodes.forEach(getImageFromPost);
 } else {
 	getImageFromPost(document.getElementsByClassName('Post')[0]);
 }
