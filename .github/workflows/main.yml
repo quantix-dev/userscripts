@@ -17,6 +17,9 @@ jobs:
       YARN_ENABLE_MIRROR: 'false'
       YARN_ENABLE_GLOBAL_CACHE: 'false'
     
+    permissions:
+      contents: write
+    
     steps:
       # Setup file access & Cache
       - uses: actions/checkout@v2
