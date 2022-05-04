@@ -9,7 +9,7 @@ function getUnspoileredSrc(blurredSrc, link) {
 		}
 
 		// Getting source from external page
-		GM_xmlhttpRequest({
+		GM.xmlHttpRequest({
 			method: 'GET',
 			url: link,
 			responseType: 'document',
