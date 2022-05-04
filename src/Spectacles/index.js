@@ -141,6 +141,7 @@ function getImageFromPost(post) {
 
 /*===============*/
 
+// Handling different post types
 if (window.location.href.split('/')[5] !== 'comments') {
 	// Attempting to dynamically grab the root
 	let depth = 0;
