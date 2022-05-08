@@ -33,15 +33,17 @@ module.exports = readdirSync(SOURCE, { withFileTypes: true }).filter(de => de.is
 
     userscript(
       path.resolve(`${SOURCE}/${de.name}/meta.js`),
-      meta => meta
-        .replace('%name%', de.name)
-        .replace('%version%', pkg.version)
-        .replace('%author%', pkg.author)
-        .replace('%namespace%', pkg.repository.url)
-        .replace('%homepage%', `${pkg.repository.url}/tree/main/src/${de.name}`)
-        .replace('%support%', `${pkg.repository.url}/issues`)
-        .replace('%download%', `${pkg.repository.url}/releases/latest/download/${de.name}.user.js`),
-    ),
+      meta => {
+        return meta
+          .replace('%name%', de.name)
+          .replace('%version%', pkg.version)
+          .replace('%author%', pkg.author)
+          .replace('%namespace%', pkg.repository.url)
+          .replace('%homepage%', `${pkg.repository.url}/tree/main/src/${de.name}`)
+          .replace('%support%', `${pkg.repository.url}/issues`)
+          .replace('%download%', `${pkg.repository.url}/releases/latest/download/${de.name}.user.js`);
+      },
+    )
   ],
 
   output: {
