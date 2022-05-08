@@ -9,7 +9,7 @@ function getUnspoileredSrc(blurredSrc, link) {
 		}
 
 		// Getting source from external page
-		GM.xmlHttpRequest({
+		GM_xmlhttpRequest({
 			method: 'GET',
 			url: link,
 			responseType: 'document',
@@ -62,7 +62,7 @@ function removePostSpoiler(element, postLink) {
 			case 'gif':
 			case 'mp4': {
 				// Creating video
-				const video = document.createElement("video");
+				let video = document.createElement("video");
 				video.className = "media-element";
 				video.height = 360;
 				video.width = 640;
@@ -145,7 +145,7 @@ function getImageFromPost(post) {
 if (window.location.href.split('/')[5] !== 'comments') {
 	// Attempting to dynamically grab the root
 	let depth = 0;
-	const rootNode = document.getElementsByClassName('scrollerItem Post')[0].parentNode.parentNode.parentNode;
+	let rootNode = document.getElementsByClassName('scrollerItem Post')[0].parentNode.parentNode.parentNode;
 	while (rootNode.childNodes.length <= 5 && depth < 10) {
 		rootNode = rootNode.parentNode;
 		depth++;
