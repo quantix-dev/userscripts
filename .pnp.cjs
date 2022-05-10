@@ -49,6 +49,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettier", "npm:2.6.2"],\
             ["resolve", "patch:resolve@npm%3A1.22.0#~builtin<compat/resolve>::version=1.22.0&hash=07638b"],\
             ["rollup", "npm:2.71.1"],\
+            ["rollup-plugin-cleanup", "virtual:25303639b5eb90b453de909db97243562d3439a2fe53d0d107dfec0c2b5fbad9e3d177d41258299d5d915602771270efc3932342ec7fbca79e376f201ce1fd73#npm:3.2.1"],\
             ["rollup-plugin-userscript", "npm:0.1.1"]\
           ],\
           "linkType": "SOFT"\
@@ -3134,6 +3135,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettier", "npm:2.6.2"],\
             ["resolve", "patch:resolve@npm%3A1.22.0#~builtin<compat/resolve>::version=1.22.0&hash=07638b"],\
             ["rollup", "npm:2.71.1"],\
+            ["rollup-plugin-cleanup", "virtual:25303639b5eb90b453de909db97243562d3439a2fe53d0d107dfec0c2b5fbad9e3d177d41258299d5d915602771270efc3932342ec7fbca79e376f201ce1fd73#npm:3.2.1"],\
             ["rollup-plugin-userscript", "npm:0.1.1"]\
           ],\
           "linkType": "SOFT"\
@@ -6394,6 +6396,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["js-cleanup", [\
+        ["npm:1.2.0", {\
+          "packageLocation": "./.yarn/cache/js-cleanup-npm-1.2.0-98eba116b1-eea17bce51.zip/node_modules/js-cleanup/",\
+          "packageDependencies": [\
+            ["js-cleanup", "npm:1.2.0"],\
+            ["magic-string", "npm:0.25.9"],\
+            ["perf-regexes", "npm:1.0.1"],\
+            ["skip-regex", "npm:1.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["js-tokens", [\
         ["npm:4.0.0", {\
           "packageLocation": "./.yarn/cache/js-tokens-npm-4.0.0-0ac852e9e2-8a95213a5a.zip/node_modules/js-tokens/",\
@@ -7564,6 +7578,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/path-type-npm-4.0.0-10d47fc86a-5b1e2daa24.zip/node_modules/path-type/",\
           "packageDependencies": [\
             ["path-type", "npm:4.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["perf-regexes", [\
+        ["npm:1.0.1", {\
+          "packageLocation": "./.yarn/cache/perf-regexes-npm-1.0.1-87c3336563-28dca5634a.zip/node_modules/perf-regexes/",\
+          "packageDependencies": [\
+            ["perf-regexes", "npm:1.0.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -8961,6 +8984,30 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["rollup-plugin-cleanup", [\
+        ["npm:3.2.1", {\
+          "packageLocation": "./.yarn/cache/rollup-plugin-cleanup-npm-3.2.1-19e71337a8-e11a6ac0a6.zip/node_modules/rollup-plugin-cleanup/",\
+          "packageDependencies": [\
+            ["rollup-plugin-cleanup", "npm:3.2.1"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:25303639b5eb90b453de909db97243562d3439a2fe53d0d107dfec0c2b5fbad9e3d177d41258299d5d915602771270efc3932342ec7fbca79e376f201ce1fd73#npm:3.2.1", {\
+          "packageLocation": "./.yarn/__virtual__/rollup-plugin-cleanup-virtual-d30fd2ec07/0/cache/rollup-plugin-cleanup-npm-3.2.1-19e71337a8-e11a6ac0a6.zip/node_modules/rollup-plugin-cleanup/",\
+          "packageDependencies": [\
+            ["rollup-plugin-cleanup", "virtual:25303639b5eb90b453de909db97243562d3439a2fe53d0d107dfec0c2b5fbad9e3d177d41258299d5d915602771270efc3932342ec7fbca79e376f201ce1fd73#npm:3.2.1"],\
+            ["@types/rollup", null],\
+            ["js-cleanup", "npm:1.2.0"],\
+            ["rollup", "npm:2.71.1"],\
+            ["rollup-pluginutils", "npm:2.8.2"]\
+          ],\
+          "packagePeers": [\
+            "@types/rollup",\
+            "rollup"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["rollup-plugin-postcss", [\
         ["npm:4.0.2", {\
           "packageLocation": "./.yarn/cache/rollup-plugin-postcss-npm-4.0.2-6f4a722324-67875e024f.zip/node_modules/rollup-plugin-postcss/",\
@@ -9206,6 +9253,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["simple-swizzle", "npm:0.2.2"],\
             ["is-arrayish", "npm:0.3.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["skip-regex", [\
+        ["npm:1.0.2", {\
+          "packageLocation": "./.yarn/cache/skip-regex-npm-1.0.2-5e63598e59-a121a04586.zip/node_modules/skip-regex/",\
+          "packageDependencies": [\
+            ["skip-regex", "npm:1.0.2"]\
           ],\
           "linkType": "HARD"\
         }]\

@@ -1,6 +1,7 @@
 const path = require('path');
 const { readdirSync } = require('fs');
 const { getRollupPlugins } = require('@gera2ld/plaid-rollup');
+const cleanup = require('rollup-plugin-cleanup');
 const userscript = require('rollup-plugin-userscript');
 const pkg = require('./package.json');
 
@@ -25,6 +26,7 @@ module.exports = readdirSync(SOURCE, { withFileTypes: true }).filter(de => de.is
   input: `${SOURCE}/${de.name}/index.js`,
 
   plugins: [
+    cleanup(),
     ...getRollupPlugins({
       esm: true,
       minimize: false,
@@ -35,7 +37,7 @@ module.exports = readdirSync(SOURCE, { withFileTypes: true }).filter(de => de.is
       path.resolve(`${SOURCE}/${de.name}/meta.js`),
       meta => {
         return meta
-          .replace('%name%', de.name)
+          .replace('%name%', `${de.name}${process.env.NODE_ENV == 'production' ? '' : '-dev'}`)
           .replace('%version%', pkg.version)
           .replace('%author%', pkg.author)
           .replace('%namespace%', pkg.repository.url)
