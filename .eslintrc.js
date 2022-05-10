@@ -1,8 +1,7 @@
 module.exports = {
   root: true,
   extends: [
-    require.resolve('@gera2ld/plaid/eslint'),
-    'plugin:prettier/recommended',
+    require.resolve('@gera2ld/plaid/eslint')
   ],
   settings: {
     'import/resolver': {
@@ -15,4 +14,7 @@ module.exports = {
   globals: {
     VM: true,
   },
+  rules: {
+    indentSize: 4
+  }
 };
