@@ -1,10 +1,11 @@
 ## Spectacles
-Reddit glasses to remove blurry spoilers
-
-### Options
-- There are additional options for spectacles
+A reddit userscript to effortlessly remove all spoilers in posts, and make it crystal clear.
 
 ### Features
-- Automatically unblurs all spoilers from reddit
-- Correctly converts to image and video
-- Support for unblurring crossposts and multiple slides
+- Unspoilers and Unblurs all media content
+- Correctly formats videos, and slideshow content to work.
+- Support for infinite scrolling to ensure all posts are unspoilered on load.
+- Support for thread posts
+
+### Options
+- There are no additional options for spectacles
