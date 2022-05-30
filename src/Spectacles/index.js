@@ -193,8 +193,8 @@ function grabSourceFromImage(blurredSrc, externalSrc) {
 
                 // Looping through to grab source
                 let curNode = tmpTreeWalker.currentNode;
-                while (curNode) {
-                    curNode = tmpTreeWalker.nextNode();
+                while (tmpTreeWalker.nextNode()) {
+                    curNode = tmpTreeWalker.currentNode;
 
                     // Getting image
                     const children = curNode.childNodes;
