@@ -32,7 +32,7 @@
     "@babel/plugin-transform-react-jsx": "^7.16.0",
     "@babel/runtime": "^7.18.0",
     "@gera2ld/plaid": "~2.4.0",
-    "@gera2ld/plaid-rollup": "~2.4.0",
+    "@gera2ld/plaid-rollup": "~2.5.0",
     "@violentmonkey/dom": "^2.0.2",
     "@violentmonkey/ui": "^0.7.0",
     "cross-env": "^7.0.3",
