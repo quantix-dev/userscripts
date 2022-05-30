@@ -23,14 +23,14 @@
     "lint": "eslint --ext .js ."
   },
   "dependencies": {
-    "@babel/runtime": "^7.16.3",
+    "@babel/runtime": "^7.18.3",
     "@violentmonkey/dom": "^2.0.2",
     "@violentmonkey/ui": "^0.7.0"
   },
   "devDependencies": {
     "@babel/eslint-plugin": "latest",
     "@babel/plugin-transform-react-jsx": "^7.17.12",
-    "@babel/runtime": "^7.16.3",
+    "@babel/runtime": "^7.18.3",
     "@gera2ld/plaid": "~2.4.0",
     "@gera2ld/plaid-rollup": "~2.4.0",
     "@violentmonkey/dom": "^2.0.2",
