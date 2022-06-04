@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        %name%
-// @version     1.1.0
+// @version     1.1.1
 // @description A reddit userscript to effortlessly remove all spoilers in posts, and make it crystal clear.
 // @namespace   %namespace%
 // @homepageURL %homepage%
