@@ -21,24 +21,14 @@ jobs:
       contents: write
     
     steps:
-      # Setup file access & Cache
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: |
-            .yarn/cache
-          key: |
-            yarn2-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            yarn2-${{ hashFiles('yarn.lock') }}
-      
       # Building with yarn
-      - uses: borales/actions-yarn@v2.3.0
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          cmd: install
-      - uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: build
+          node-version: '14'
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile --immutable
+      - run: yarn build
       
       # Pushing to release
       - name: Release
