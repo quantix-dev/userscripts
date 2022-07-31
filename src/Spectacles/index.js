@@ -29,7 +29,12 @@ function createPostTreeWalker(post) {
             // Validating
             if (node.nodeName === 'IMG') {
                 // Constructing URL
-                const url = new URL(node.src);
+                let url;
+                try {
+                    url = new URL(node.src);
+                } catch {
+                    return NodeFilter.FILTER_SKIP;
+                }
 
                 // Checking to see if it's a valid post
                 if (mediaLinks.includes(url.hostname) && url.searchParams.has('blur')) {
@@ -49,49 +54,51 @@ function createPostTreeWalker(post) {
  * @param {Node} mediaNode The media node, often an image, to find the thread to
  * @returns {string} The source.
  */
-function findExternalNode(mediaNode) {
-    let depth = 0;
-    let par = mediaNode;
-    while (par && par.classList) {
-        if (par.classList.contains('scrollerItem') || par.nodeName == 'A' || depth >= 15) break;
-        par = par.parentNode;
-        depth++;
-    }
+async function findExternalNode(mediaNode) {
+    return new Promise((resolve, reject) => {
+        let depth = 0;
+        let par = mediaNode;
+        while (par && par.classList) {
+            if (par.classList.contains('scrollerItem') || par.nodeName == 'A' || depth >= 15) break;
+            par = par.parentNode;
+            depth++;
+        }
 
-    // Handling the gathered node
-    if (!par) return null;
-    if (par.nodeName == 'A') {
-        return par;
-    } else {
-        // i forgot what this entire section is even for..
-        // const treeWalker = document.createTreeWalker(par, NodeFilter.SHOW_ELEMENT, (node) => {
-        //     // Validating
-        //     if (node.nodeName == 'A') {
-        //         if (invalidSourceLinks.filter((link) => node.href.match(link) != null).length <= 0)
-        //             return NodeFilter.FILTER_ACCEPT;
-        //     }
+        // Handling the gathered node
+        if (!par) return null;
+        if (par.nodeName == 'A') {
+            resolve(par);
+        } else {
+            // i forgot what this entire section is even for..
+            // const treeWalker = document.createTreeWalker(par, NodeFilter.SHOW_ELEMENT, (node) => {
+            //     // Validating
+            //     if (node.nodeName == 'A') {
+            //         if (invalidSourceLinks.filter((link) => node.href.match(link) != null).length <= 0)
+            //             return NodeFilter.FILTER_ACCEPT;
+            //     }
 
-        //     return NodeFilter.FILTER_SKIP;
-        // });
+            //     return NodeFilter.FILTER_SKIP;
+            // });
 
 
-        // while (treeWalker.nextNode()) {
-        //     // Prevent duplicate
-        //     let flag = true;
-        //     const postWalker = createPostTreeWalker(treeWalker.currentNode);
-        //     while (postWalker.nextNode()) {
-        //         console.log(`node ${postWalker.currentNode} .. ${postWalker.currentNode.src}`)
-        //         if (postWalker.currentNode.src == mediaNode.src) {
-        //             flag = false;
-        //             console.log('found duplicate');
-        //             break;
-        //         }
-        //     }
+            // while (treeWalker.nextNode()) {
+            //     // Prevent duplicate
+            //     let flag = true;
+            //     const postWalker = createPostTreeWalker(treeWalker.currentNode);
+            //     while (postWalker.nextNode()) {
+            //         console.log(`node ${postWalker.currentNode} .. ${postWalker.currentNode.src}`)
+            //         if (postWalker.currentNode.src == mediaNode.src) {
+            //             flag = false;
+            //             console.log('found duplicate');
+            //             break;
+            //         }
+            //     }
 
-        //     if (!flag) continue;
-        //     return treeWalker.currentNode;
-        // }
-    }
+            //     if (!flag) continue;
+            //     return treeWalker.currentNode;
+            // }
+        }
+    });
 }
 
 /**
@@ -138,19 +145,20 @@ function removeMediaSpoiler(mediaNode, source) {
     }
 
     // Fix the post
-    let linkNode = findExternalNode(mediaNode);
-    for (let child of linkNode.children) {
-        if (child !== mediaNode && child.nodeName == "DIV") {
-            let children = Array.from(child.children);
-            children = children.filter((x) => {
-                return x.nodeName === "BUTTON" && x.innerHTML.includes('spoiler');
-            });
+    findExternalNode(mediaNode).then((linkNode) => {
+        for (let child of linkNode.children) {
+            if (child !== mediaNode && child.nodeName == "DIV") {
+                let children = Array.from(child.children);
+                children = children.filter((x) => {
+                    return x.nodeName === "BUTTON" && x.innerHTML.includes('spoiler');
+                });
 
-            if (children[0]) {
-                children[0].style.display = "none";
+                if (children[0]) {
+                    children[0].style.display = "none";
+                }
             }
         }
-    }
+    });
 }
 
 /**
@@ -159,7 +167,7 @@ function removeMediaSpoiler(mediaNode, source) {
  * @param {string} externalSrc The link of the external media source to scan.
  * @returns {string} The unspoilered source link to the media.
  */
-function grabSourceFromImage(blurredSrc, externalSrc) {
+async function grabSourceFromImage(blurredSrc, externalSrc) {
     return new Promise((resolve, reject) => {
         // Checking to see if the link isn't already unblurred
         const splitURL = externalSrc.split('?')[1];
@@ -217,74 +225,88 @@ function grabSourceFromImage(blurredSrc, externalSrc) {
 /**
  * Attempts to get all images from the reddit post.
  * @param {Node} post the post to search for images in.
- * @param {(mediaNode: Node, source: string)} callback the function to call each time an image is found.
  */
-function getImagesFromPost(post, callback) {
-    // Creating tree walker from post
-    const treeWalker = createPostTreeWalker(post);
-    let currentNode = treeWalker.currentNode;
+async function getImagesFromPost(post) {
+    return new Promise((resolve, reject) => {
+        // Creating tree walker from post
+        const treeWalker = createPostTreeWalker(post);
+        let currentNode = treeWalker.currentNode;
+        let promises = [];
 
-    while (currentNode) {
-        let source = findExternalNode(treeWalker.currentNode);
-        if (source) {
-            callback(treeWalker.currentNode, source.href)
+        while (currentNode) {
+            promises.push(findExternalNode(treeWalker.currentNode));
+            currentNode = treeWalker.nextNode();
         }
 
-        currentNode = treeWalker.nextNode();
-    }
+        // getting promises
+        Promise.race(promises).then((source) => {
+            resolve({ mediaNode: treeWalker.currentNode, source: source.href });
+        })
+    })
 }
 
 /**
  * Main function that will remove spoilers from posts, and check against the whitelist or blacklist
  * @param {Node} post The post to remove spoilered media from.
  */
-function removePostSpoiler(post, pageType) {
+async function removePostSpoiler(post, pageType) {
     // Stopping unnecessary posts from continuing
     //if (post.nodeName !== "IMG" && !post.classList.contains('Post')) return;
 
     // Managing different types
     let postType;
     if (pageType == 'thread') {
-        getImagesFromPost(post, removeMediaSpoiler);
+        getImagesFromPost(post).then(({ mediaNode, source }) => {
+            removeMediaSpoiler(mediaNode, source);
+        });
+
         post.click();
     } else {
-        getImagesFromPost(post, (mediaNode, source) => {
+        getImagesFromPost(post).then(({ mediaNode, source }) => {
+            if (!mediaNode || !source) return;
             grabSourceFromImage(mediaNode.src, source).then((content) => {
                 removeMediaSpoiler(mediaNode, content);
             })
-        });
+        })
     }
 }
 
 /* ---------------------- */
 
-// Grabbing the rootNode depending on the post type
-let rootNode, postType;
-if (window.location.href.split('/')[5] !== 'comments') {
-    // Dynamically grabbing for homepage type
-    let depth = 0;
-    rootNode = document.getElementsByClassName('scrollerItem Post')[0];
-    while (rootNode.parentNode !== null && depth < 10) {
-        if (rootNode.childNodes.length > 5) break;
+(() => {
+    // Grabbing the rootNode depending on the post type
+    let rootNode, postType;
+    if (window.location.href.split('/')[5] !== 'comments') {
+        // Dynamically grabbing for homepage type
+        let depth = 0;
+        rootNode = document.getElementsByClassName('scrollerItem Post')[0];
+        while (rootNode && depth < 10) {
+            rootNode = rootNode.parentNode;
+            if (rootNode.childNodes.length > 5) break;
 
-        rootNode = rootNode.parentNode;
-        depth++;
+            depth++;
+        }
+    } else {
+        rootNode = document.getElementsByClassName('Post')[0];
+        postType = 'thread';
     }
 
-    // Call initial function on all child nodes
-    rootNode.childNodes.forEach((x) => { removePostSpoiler(x, postType) });
-} else {
-    rootNode = document.getElementsByClassName('Post')[0];
-    postType = 'thread';
+    // Handling rootnode missing
+    if (!rootNode) return;
+    console.log("Spectacles loaded successfully!")
 
-    // Remove spoiler  on 'root' because this should be the only post
-    removePostSpoiler(rootNode)
-}
+    // Handling spoiler removal on load
+    if (postType === 'thread') {
+        removePostSpoiler(rootNode)
+    } else {
+        rootNode.childNodes.forEach((x) => { removePostSpoiler(x, postType) });
+    }
 
-// Setting up a listener to detect when new posts are added
-VM.observe(rootNode, (mutList) => {
-    mutList.filter((mut) => mut.type === 'childList').map((mut) => mut.addedNodes[0]).forEach((x) => {
-        if (!x) return false;
-        removePostSpoiler(x, postType)
-    });
-}, { childList: true });
+    // Setting up a listener to detect when new posts are added
+    VM.observe(rootNode, (mutList) => {
+        mutList.filter((mut) => mut.type === 'childList').map((mut) => mut.addedNodes[0]).forEach((x) => {
+            if (!x) return false;
+            removePostSpoiler(x, postType)
+        });
+    }, { childList: true });
+})();

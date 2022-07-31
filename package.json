@@ -1,6 +1,6 @@
 {
   "name": "Userscripts",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "A collection of userscript experiments that are too small to be in an extension. From minor website adjustments such as removing spoilers to improving the media viewer.",
   "author": "quantix-dev",
   "license": "MIT",
