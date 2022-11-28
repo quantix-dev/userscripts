@@ -47,7 +47,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:8.0.1"],\
             ["npm-run-all", "npm:4.1.5"],\
             ["resolve", "patch:resolve@npm%3A1.22.0#~builtin<compat/resolve>::version=1.22.0&hash=07638b"],\
-            ["rollup", "npm:2.72.1"],\
+            ["rollup", "npm:3.5.0"],\
             ["rollup-plugin-cleanup", "virtual:25303639b5eb90b453de909db97243562d3439a2fe53d0d107dfec0c2b5fbad9e3d177d41258299d5d915602771270efc3932342ec7fbca79e376f201ce1fd73#npm:3.2.1"],\
             ["rollup-plugin-userscript", "npm:0.1.1"]\
           ],\
@@ -3159,7 +3159,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:8.0.1"],\
             ["npm-run-all", "npm:4.1.5"],\
             ["resolve", "patch:resolve@npm%3A1.22.0#~builtin<compat/resolve>::version=1.22.0&hash=07638b"],\
-            ["rollup", "npm:2.72.1"],\
+            ["rollup", "npm:3.5.0"],\
             ["rollup-plugin-cleanup", "virtual:25303639b5eb90b453de909db97243562d3439a2fe53d0d107dfec0c2b5fbad9e3d177d41258299d5d915602771270efc3932342ec7fbca79e376f201ce1fd73#npm:3.2.1"],\
             ["rollup-plugin-userscript", "npm:0.1.1"]\
           ],\
@@ -8987,6 +8987,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["fsevents", "patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=18f3a7"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:3.5.0", {\
+          "packageLocation": "./.yarn/cache/rollup-npm-3.5.0-ce8e86bf9b-57aa8e17c7.zip/node_modules/rollup/",\
+          "packageDependencies": [\
+            ["rollup", "npm:3.5.0"],\
+            ["fsevents", "patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=18f3a7"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["rollup-plugin-cleanup", [\
@@ -9003,7 +9011,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["rollup-plugin-cleanup", "virtual:25303639b5eb90b453de909db97243562d3439a2fe53d0d107dfec0c2b5fbad9e3d177d41258299d5d915602771270efc3932342ec7fbca79e376f201ce1fd73#npm:3.2.1"],\
             ["@types/rollup", null],\
             ["js-cleanup", "npm:1.2.0"],\
-            ["rollup", "npm:2.72.1"],\
+            ["rollup", "npm:3.5.0"],\
             ["rollup-pluginutils", "npm:2.8.2"]\
           ],\
           "packagePeers": [\
