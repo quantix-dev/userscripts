@@ -1894,7 +1894,7 @@ __metadata:
     husky: ^8.0.1
     npm-run-all: ^4.1.5
     resolve: ^1.22.0
-    rollup: ^2.71.1
+    rollup: ^3.14.0
     rollup-plugin-cleanup: ^3.2.1
     rollup-plugin-userscript: ^0.1.1
   languageName: unknown
@@ -6578,7 +6578,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:^2.56.2, rollup@npm:^2.71.1":
+"rollup@npm:^2.56.2":
   version: 2.72.1
   resolution: "rollup@npm:2.72.1"
   dependencies:
@@ -6589,6 +6589,20 @@ __metadata:
   bin:
     rollup: dist/bin/rollup
   checksum: 3dca122129f560acc3c54dd5bd5f9470dd562d74f61c652c57b6a4355a963c0828640382ebff544f1b0e71387733a51fb963d6f761ae1f05a84f5923bbde883c
+  languageName: node
+  linkType: hard
+
+"rollup@npm:^3.14.0":
+  version: 3.14.0
+  resolution: "rollup@npm:3.14.0"
+  dependencies:
+    fsevents: ~2.3.2
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    rollup: dist/bin/rollup
+  checksum: 48f4da224753b8022529256243b74b3f6f41d9b4358ba079ac42f2a2cf07e4bd01b5d94579338194238e3c575487974ca508e144cf6195123293e7fdf82506cb
   languageName: node
   linkType: hard
 
